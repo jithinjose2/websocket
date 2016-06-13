@@ -1,0 +1,27 @@
+{
+  "name": "jithinjose2/websocket",
+  "description": "Websocket module to used with laravel",
+  "keywords": [],
+  "homepage": "https://github.com/jithinjose2/websocket",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Jithin Jose",
+      "email": "jithinjose2@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=5.4.0",
+    "illuminate/config": "~5.0",
+    "illuminate/support": "~5.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "~4.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "JithinJose2\\WebSocket\\": "src/"
+    }
+  },
+  "minimum-stability": "dev"
+}
