@@ -10,6 +10,10 @@ class ServiceProvider extends LaravelServiceProvider {
      * @var bool
      */
     protected $defer = false;
+    
+    protected $commands = [
+		'JithinJose2\WebSocket\Console\Commands\StartServer'
+	];
 
     /**
      * Bootstrap the application events.
@@ -29,7 +33,11 @@ class ServiceProvider extends LaravelServiceProvider {
      */
     public function register()
     {
-        // Bind any implementations.
+        // Merge configuration
+        $this->mergeConfigFrom(__DIR__.'/../config/websocket.php', 'websocket');
+        
+        // Register commands.
+        $this->commands($this->commands);
     }
 
     /**

@@ -16,6 +16,10 @@ class WebSocket {
 		$this->server->setMaxConnectionsPerIp(100);
 		$this->server->setMaxRequestsPerMinute(2000);
 		$this->server->setHook($this);
+	}
+	
+	public function serve()
+	{
 		$this->server->run();
 	}
 	
@@ -36,11 +40,12 @@ class WebSocket {
     }
     
 	/* Fired when data received */
-    public function onDataReceive($connection_id,$data){
+    public function onDataReceive($connection_id,$data)
+	{
 		echo "\nData received from $connection_id :";
 		
 		$data = json_decode($data,true);
-		print_r($data);
+		dd($data);
 		
 		if(isset($data['action'])){
 			$action = 'action_'.$data['action'];
@@ -85,5 +90,3 @@ class WebSocket {
 	}
 	
 }
-
-$app = new Application();
