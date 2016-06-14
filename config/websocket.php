@@ -13,5 +13,7 @@ return [
     'port'  => '8000',
     
     // Need to use ssl for wss connecctions
-    'ssl'   => false
+    'ssl'   => false,
+    
+    'handler' => ''
 ];

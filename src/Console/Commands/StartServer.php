@@ -29,10 +29,11 @@ class StartServer extends Command {
 		
 		$host = config('websocket.host');
 		$port = config('websocket.port');
+		$handler = config('websocket.handler');
 		
 		$this->info("Starting Websocket server AT: ws://$host:$port");
 		
-		$socket = new WebSocket($host, $port);
+		$socket = new WebSocket(new $handler(), $host, $port);
 		$socket->serve();
 		
 	}

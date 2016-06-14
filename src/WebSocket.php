@@ -1,13 +1,17 @@
 <?php
 namespace JithinJose2\WebSocket;
 
+use JithinJose2\WebSocket\Events\WebSocketClientConnect;
+
 class WebSocket {
 	
 	private $connections = array();	// Array to save 
 	
 	public $server;
 	
-	public function __construct($host = 'localhost', $port = 8000, $ssl = false)
+	public $handler;
+	
+	public function __construct($handler, $host = 'localhost', $port = 8000, $ssl = false)
 	{
 		$this->server = new Server($host, $port, $ssl);
 		$this->server->setMaxClients(100);
@@ -16,6 +20,8 @@ class WebSocket {
 		$this->server->setMaxConnectionsPerIp(100);
 		$this->server->setMaxRequestsPerMinute(2000);
 		$this->server->setHook($this);
+		$this->handler = $handler;
+		$this->handler->server = $this;
 	}
 	
 	public function serve()
@@ -26,15 +32,14 @@ class WebSocket {
 	/* Fired when a socket trying to connect */
 	public function onConnect($connection_id)
 	{
-		echo "\nOn connect called : $connection_id";
         return true;
     }
     
 	/* Fired when a socket disconnected */
     public function onDisconnect($connection_id)
 	{
-		echo "\nOn disconnect called : $connection_id";
-		if(isset($this->connections[$connection_id])){
+		if(isset($this->connections[$connection_id])) {
+			$this->handler->onDisconnect($this->connections[$connection_id]);
 			unset($this->connections[$connection_id]);
 		}
     }
@@ -48,11 +53,21 @@ class WebSocket {
 		dd($data);
 		
 		if(isset($data['action'])){
-			$action = 'action_'.$data['action'];
-			if( method_exists($this,$action)){
-				unset($data['action']);
-				$this->$action($connection_id,$data);
-			}else{
+			
+			$action = $data['action'];
+			if($data['action'] == 'register') {
+				
+				if($id = $this->handler->onConnect($data)) {
+					$this->connections[$connection_id] = $id;
+				}
+				
+			} elseif(method_exists($this->handler, $action)) {
+				
+				if(isset($this->connections[$connection_id])) {
+					$this->handler->$action($connection_id, $data);
+				}
+				
+			} else {
 				echo "\n Caution : Action handler '$action' not found!";
 			}
 		}
@@ -60,33 +75,11 @@ class WebSocket {
     }
 	
 	/* Used to send data to particular connection */
-	public function sendDataToConnection($connection_id,$action,$data)
+	public function sendData($id, $action, $data)
 	{
-		$this->server->sendData($connection_id,$action,$data);
-	}
-	
-	
-	///// ACTIONS ////
-	public function action_register($connection_id,$data)
-	{
-		$this->connections[$connection_id] = max($this->connections) + 1;
-		
-		$data = array();
-		$data['user_id'] = $this->connections[$connection_id];
-		$data['users_online'] = count($this->connections);
-		$this->server->sendData($connection_id,'registred',$data);
-	}
-	
-	public function action_chat_text($connection_id,$data){
-		$user_id	= $this->connections[$connection_id];
-		
-		if(isset($data['chat_text']) && strlen($data['chat_text'])>0){
-			$data['date_time'] = date('H:i:s');
-			foreach($this->connections as $key=>$value){
-				$this->server->sendData($key,'chat_text',$data);
-			}
+		if(isset($this->connections[$connection_id])) {
+			$this->server->sendData($this->connections[$connection_id],$action,$data);
 		}
-		
 	}
 	
 }
