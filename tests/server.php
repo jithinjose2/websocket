@@ -1,8 +1,8 @@
 <?php
 
-include "./lib/Socket.php";
-include "./lib/Server.php";
-include "./lib/Connection.php";
+include "../vendor/autoload.php";
+
+use JithinJose2\WebSocket\Server;
 
 echo "\033[2J";
 echo "\033[0;0f";
@@ -15,6 +15,9 @@ class Application {
 	public $server;
 	
 	public function __construct(){
+		
+		config('websocket.host');
+		
 		$this->server = new Server('0.0.0.0', 8000, false);
 		$this->server->setMaxClients(100);
 		$this->server->setCheckOrigin(false);
