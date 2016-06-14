@@ -16,13 +16,10 @@ class ServiceProvider extends LaravelServiceProvider {
      *
      * @return void
      */
-    public function boot() {
-
+    public function boot()
+    {
         $this->handleConfigs();
         // $this->handleMigrations();
-        // $this->handleViews();
-        // $t[[lhis->handleTranslations();
-        // $this->handleRoutes();
     }
 
     /**
@@ -30,10 +27,9 @@ class ServiceProvider extends LaravelServiceProvider {
      *
      * @return void
      */
-    public function register() {
-
+    public function register()
+    {
         // Bind any implementations.
-
     }
 
     /**
@@ -41,12 +37,13 @@ class ServiceProvider extends LaravelServiceProvider {
      *
      * @return array
      */
-    public function provides() {
-
+    public function provides()
+    {
         return [];
     }
 
-    private function handleConfigs() {
+    private function handleConfigs()
+    {
 
         $configPath = __DIR__ . '/../config/websocket.php';
 
@@ -55,25 +52,10 @@ class ServiceProvider extends LaravelServiceProvider {
         $this->mergeConfigFrom($configPath, 'websocket');
     }
 
-    private function handleTranslations() {
 
-        $this->loadTranslationsFrom(__DIR__.'/../lang', 'websocket');
-    }
-
-    private function handleViews() {
-
-        $this->loadViewsFrom(__DIR__.'/../views', 'websocket');
-
-        $this->publishes([__DIR__.'/../views' => base_path('resources/views/vendor/websocket')]);
-    }
-
-    private function handleMigrations() {
+    private function handleMigrations()
+    {
 
         $this->publishes([__DIR__ . '/../migrations' => base_path('database/migrations')]);
-    }
-
-    private function handleRoutes() {
-
-        include __DIR__.'/../routes.php';
     }
 }
