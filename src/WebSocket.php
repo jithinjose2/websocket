@@ -50,15 +50,19 @@ class WebSocket {
 		echo "\nData received from $connection_id :";
 		
 		$data = json_decode($data,true);
-		dd($data);
+		print_r($data);
 		
 		if(isset($data['action'])){
 			
-			$action = $data['action'];
+			$action = 'action_' . $data['action'];
 			if($data['action'] == 'register') {
 				
 				if($id = $this->handler->onConnect($data)) {
 					$this->connections[$connection_id] = $id;
+					$this->server->sendData($connection_id,'registred',[
+						"id" =>  $id,
+						"message" => "Registration confirmed"
+					]);
 				}
 				
 			} elseif(method_exists($this->handler, $action)) {
