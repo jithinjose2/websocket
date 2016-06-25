@@ -78,12 +78,21 @@ class WebSocket {
     }
 	
 	/* Used to send data to particular connection */
-	public function sendData($id, $action, $data)
+	public function sendData($key, $action, $data)
 	{
-		if(isset($this->connections[$id])) {
+		if(($id = $this->findBYKey($key)) !== false) {
 			echo "Data sending to $id". json_encode($data);
-			$this->server->sendData($this->connections[$id],$action,$data);
+			$this->server->sendData($id, $action, $data);
 		}
+	}
+
+	public function findBYKey($key)
+	{
+		$keys = array_flip($this->connections);
+		if(isset($keys[$key])){
+			return $keys[$key];
+		}
+		return false;
 	}
 	
 }
