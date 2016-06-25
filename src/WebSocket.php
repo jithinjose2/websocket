@@ -59,10 +59,9 @@ class WebSocket {
 				
 				if(($data = $this->handler->onConnect($data))!==false) {
 					$this->connections[$connection_id] = $data['key'];
-					$this->server->sendData($connection_id,'registred',[
-						"id" =>  $data['key'],
-						"message" => "Registration confirmed"
-					]);
+					$data['message'] = "Registration confirmed";
+					$data['id'] = $data['key'];
+					$this->server->sendData($connection_id, 'registred', $data);
 				}
 				
 			} elseif(method_exists($this->handler, $action)) {
