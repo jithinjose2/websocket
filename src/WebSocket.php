@@ -57,10 +57,10 @@ class WebSocket {
 			$action = 'action_' . $data['action'];
 			if($data['action'] == 'register') {
 				
-				if($id = $this->handler->onConnect($data)) {
-					$this->connections[$connection_id] = $id;
+				if(($data = $this->handler->onConnect($data))!==false) {
+					$this->connections[$connection_id] = $data['key'];
 					$this->server->sendData($connection_id,'registred',[
-						"id" =>  $id,
+						"id" =>  $data['key'],
 						"message" => "Registration confirmed"
 					]);
 				}
@@ -81,8 +81,9 @@ class WebSocket {
 	/* Used to send data to particular connection */
 	public function sendData($id, $action, $data)
 	{
-		if(isset($this->connections[$connection_id])) {
-			$this->server->sendData($this->connections[$connection_id],$action,$data);
+		if(isset($this->connections[$id])) {
+			echo "Data sending to $id". json_encode($data);
+			$this->server->sendData($this->connections[$id],$action,$data);
 		}
 	}
 	

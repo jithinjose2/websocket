@@ -109,7 +109,7 @@ class Connection
 		$response.= "Sec-WebSocket-Accept: " . $secAccept . "\r\n";
 		if(isset($headers['Sec-WebSocket-Protocol']) && !empty($headers['Sec-WebSocket-Protocol']))
 		{
-			$response.= "Sec-WebSocket-Protocol: " . substr($path, 1) . "\r\n";
+			$response.= "Sec-WebSocket-Protocol: " . substr('/', 1) . "\r\n";
 		}
 		$response.= "\r\n";
 		
