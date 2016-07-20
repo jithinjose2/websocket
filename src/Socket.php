@@ -121,18 +121,18 @@ class Socket
 	public function writeBuffer($resource, $string)
 	{		
 		$stringLength = strlen($string);
-		for($written = 0; $written < $stringLength; $written += $fwrite)
-		{
-			$fwrite = fwrite($resource, substr($string, $written));			
-			if($fwrite === false)
-			{
-				return false;
+		try {
+			for ($written = 0; $written < $stringLength; $written += $fwrite) {
+				$fwrite = fwrite($resource, substr($string, $written));
+				if ($fwrite === false) {
+					return false;
+				} elseif ($fwrite === 0) {
+					return false;
+				}
 			}
-			elseif($fwrite === 0)
-			{
-				return false;
-			}
-		}		
+		} catch(\Exception $e){
+			return false;
+		}
 		return $written;
 	}
 }

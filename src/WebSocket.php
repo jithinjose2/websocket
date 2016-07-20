@@ -26,6 +26,7 @@ class WebSocket {
 	
 	public function serve()
 	{
+		$this->handler->starting();
 		$this->server->run();
 	}
 	
@@ -81,7 +82,7 @@ class WebSocket {
 	public function sendData($key, $action, $data)
 	{
 		if(($id = $this->findBYKey($key)) !== false) {
-			echo "Data sending to $id". json_encode($data);
+			echo "Data sending to $key: ". json_encode($data);
 			$this->server->sendData($id, $action, $data);
 		}
 	}
