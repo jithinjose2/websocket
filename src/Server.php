@@ -268,7 +268,7 @@ class Server extends Socket
 	{		// remove reference in clients app:
 
 		if(method_exists($this->_hook,'onDisconnect')){
-			$this->_hook>onDisconnect((int)$client->getClientSocket());	
+			$this->_hook->onDisconnect((int)$client->getClientSocket());
 		}
         
 		$resource = $client->getClientSocket();
