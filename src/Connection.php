@@ -276,7 +276,7 @@ class Connection
 
     public function log($message, $type = 'info')
     {        
-        $this->server->log('[client ' . $this->ip . ':' . $this->port . '] ' . $message, $type);
+        //$this->server->log('[client ' . $this->ip . ':' . $this->port . '] ' . $message, $type);
     }
 	
 	private function hybi10Encode($payload, $type = 'text', $masked = true)

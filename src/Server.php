@@ -72,7 +72,6 @@ class Server extends Socket
 		if(isset($this->clients[$connection_id]) && $this->clients[$connection_id]->handshaked){
 			$data['action'] = $action;
 			$data = json_encode($data);
-			echo $data;
 			$this->clients[$connection_id]->send($data);
 		}
 	}
@@ -85,20 +84,10 @@ class Server extends Socket
 		while(true)
 		{
 			$changed_sockets = $this->allsockets;
-			@stream_select($changed_sockets, $write = null, $except = null, 1, 5000);
-			
-			/*foreach($this->clients as $client){
-				print_r($client);
-			}*/
-			 //send broadcast hooks.
-			/*if(strlen($this->broadcat_hook)>0){
-				$data = $this->broadcat_hook;
-				$data = json_encode($data());
-				foreach($this->clients as $client){
-					$client->send($data);
-				}
-			}*/
-			
+			@stream_select($changed_sockets, $write = null, $except = null, 0, 100000);
+
+			$this->_hook->loop();
+
 			foreach($changed_sockets as $socket)
 			{
 
