@@ -9,11 +9,11 @@ return [
     // Websocket hostname
     'host'  => 'localhost',
     
-    // Port at whicch websocket server is listening on
+    // Port at which websocket server is listening on
     'port'  => '8000',
     
-    // Need to use ssl for wss connecctions
+    // Need to use ssl for wss connections
     'ssl'   => false,
     
-    'handler' => ''
+    'handler' => '\Chat\Wshandle'
 ];

@@ -1,6 +1,8 @@
 <?php namespace JithinJose2\WebSocket;
 
 use Illuminate\Support\ServiceProvider as LaravelServiceProvider;
+use JithinJose2\WebSocket\Console\Commands\StartServer;
+use JithinJose2\WebSocket\Console\Commands\WebSocketWorker;
 
 class ServiceProvider extends LaravelServiceProvider {
 
@@ -12,7 +14,8 @@ class ServiceProvider extends LaravelServiceProvider {
     protected $defer = false;
     
     protected $commands = [
-		'JithinJose2\WebSocket\Console\Commands\StartServer'
+		StartServer::class,
+        WebSocketWorker::class
 	];
 
     /**
@@ -38,6 +41,8 @@ class ServiceProvider extends LaravelServiceProvider {
         
         // Register commands.
         $this->commands($this->commands);
+
+        require __DIR__ . '/helper.php';
     }
 
     /**
