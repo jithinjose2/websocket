@@ -1,8 +1,6 @@
 # websocket
 
-WebSocket Library for Laravel
-
-Require this package with composer:
+Scalable WebSocket server for laravel.
 
 ## Installation
 
