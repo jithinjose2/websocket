@@ -23,5 +23,12 @@
       "JithinJose2\\WebSocket\\": "src/"
     }
   },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "JithinJose2\\WebSocket\\ServiceProvider"
+      ]
+    }
+  },
   "minimum-stability": "dev"
 }

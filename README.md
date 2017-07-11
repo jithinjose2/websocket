@@ -1,6 +1,4 @@
-# websocket
-
-Scalable WebSocket server for laravel.
+# Scalable WebSocket server for Laravel.
 
 ## Installation
 
